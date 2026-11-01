@@ -42,10 +42,10 @@ Do not close the form hint or one-day tickets when the parser fix ships. Check e
 
 ## The desk's table
 
-The table below is the view `causes.ts` gives. It files each report by tenant, form and channel, so
-the one-day moves count under `parser` and appear in the note under the table. That is why its
-`parser` row is larger than the parser row above. Neither table uses `intakeTag`, which intake
-guesses from the reporter's browser.
+The counts above are the desk's, from the table below. `causes.ts` files each report by tenant, form
+and channel, so the one-day moves stay in the `parser` row and appear in the note under the table.
+Their ticket overlaps the parser ticket: do not add its count on top. Neither table uses `intakeTag`,
+which intake guesses from the reporter's browser.
 
 <CauseTable ticket={4471} />
 

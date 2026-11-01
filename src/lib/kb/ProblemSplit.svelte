@@ -4,18 +4,17 @@
   import { causeOf, uniqueById, type Report } from '#lib/kb/causes';
   import { tenantOf } from '#lib/kb/locales';
 
-  // Each report counted once, under one problem. causes.ts files one-day moves by tenant; here they stand apart.
+  // Counted the way CauseTable counts: one-day moves stay under their tenant's cause, and their own row is not added on top.
   let { ticket, tickets }: { ticket: number; tickets: { parser: string; hint: string; oneDay: string } } = $props();
 
   const merged = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket));
   const oneDay = $derived(merged.filter((r) => notes.oneDayMove.includes(r.id)));
-  const rest = $derived(merged.filter((r) => !notes.oneDayMove.includes(r.id)));
   const rows = $derived([
-    { problem: 'parser reads day-first dates month first', link: tickets.parser, n: rest.filter((r) => causeOf(r, tenantOf(r)) === 'parser').length },
-    { problem: 'booking-v3 form hint says MM/DD', link: tickets.hint, n: rest.filter((r) => causeOf(r, tenantOf(r)) === 'hint').length },
-    { problem: 'dates move by one day', link: tickets.oneDay, n: oneDay.length },
+    { problem: 'parser reads day-first dates month first', link: tickets.parser, n: merged.filter((r) => causeOf(r, tenantOf(r)) === 'parser').length },
+    { problem: 'booking-v3 form hint says MM/DD', link: tickets.hint, n: merged.filter((r) => causeOf(r, tenantOf(r)) === 'hint').length },
+    { problem: 'dates move by one day (inside the parser count)', link: tickets.oneDay, n: oneDay.length },
   ]);
-  const total = $derived(rows.reduce((sum, r) => sum + r.n, 0));
+  const total = $derived(merged.length);
 </script>
 
 <table>
