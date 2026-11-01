@@ -18,7 +18,8 @@ signature: lucaslov
 </script>
 
 [#4471](/kb/incidents/4471) says one issue with one fix queued. The reports do not. They describe
-three problems, and the queued parser fix closes only one of them.
+three problems. Engineering closed #4471 on 5 October: the parser is fixed, the form hint is won't
+fix, and the update does not mention the one-day moves.
 
 ## The problems
 
@@ -26,18 +27,19 @@ three problems, and the queued parser fix closes only one of them.
 
 - **Parser.** The shared parser reads every date month first, so a day-first tenant's dates come
   out flipped: 7 April becomes 4 July. This affects every tenant, through the app, email and the
-  booking-v2 form.
+  booking-v2 form. **Fixed:** `fix(dates): parse dd/mm for eu locales`.
 - **Form hint.** The booking-v3 form prints `MM/DD/YYYY` under its date field. People type what it
   says, and the form then reads it the tenant's way. The result looks the same as the parser bug,
-  but it comes only through the form on booking-v3 tenants. A parser fix does not touch it. The
-  hint has to change.
+  but it comes only through the form on booking-v3 tenants. A parser fix does not touch it.
+  **Won't fix:** the booking-v3 form is retired.
 - **One-day moves.** A date moves by a day, or differs between two people for the same meeting.
   Swapping day and month cannot turn 12 May into 11 May, so the parser does not explain these. We
   do not have the cause yet. The Lisbon and Toronto report points at time zones, but that is a
-  lead, not a finding.
+  lead, not a finding. **Open:** the engineering update does not cover these.
 
 <Callout kind="warn">
-Do not close the form hint or one-day tickets when the parser fix ships. Check each one on its own.
+The parser fix does not settle the one-day moves. If a report of a one-day move comes in, add it to
+the open ticket. Do not read it as the parser bug coming back.
 </Callout>
 
 ## The desk's table
